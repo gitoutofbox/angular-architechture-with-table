@@ -1,0 +1,14 @@
+<ul class="pagination pagination-smx justify-content-end">
+  <li class="page-item" *ngIf="currentPage > 1"><a class="page-link" (click)="doPagination( currentPage - 1 )">Previous</a></li>
+  <li class="page-item page-link-bots" *ngIf="!showAllPages && currentPage - showPageAfter > 1">...</li>
+
+  <ng-container *ngFor="let record of [].constructor(totalPage) let i = index;" >
+  <li class="page-item"     
+    [ngClass]="{'active':currentPage == i+1}"
+    *ngIf="showAllPages || (   currentPage - (i+1) <= showPageBefore && (i+1) - currentPage <= showPageAfter    )">
+      <a class="page-link" (click)="doPagination(i+1)">{{i+1}}</a>
+    </li>
+  </ng-container>
+  <li class="page-item page-link-bots" *ngIf="!showAllPages && totalPage - currentPage > showPageAfter">...</li>
+  <li class="page-item"><a class="page-link" (click)="doPagination( currentPage + 1)" *ngIf="currentPage < totalPage">Next</a></li>
+</ul>

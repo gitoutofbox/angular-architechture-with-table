@@ -1,0 +1,36 @@
+<a [routerLink]="skipNavigation">Skip to main content</a>
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class=" nav-link" routerLink="home" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="about" routerLinkActive="active">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="users" routerLinkActive="active">Users</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="login" routerLinkActive="active" *ngIf="!currentUser">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="registration" routerLinkActive="active" *ngIf="!currentUser">Register</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="logout()" *ngIf="currentUser" routerLinkActive="active">Logout</a>
+    </li> 
+    <li class="nav-item">
+      <a class="nav-link" routerLink="charts" routerLinkActive="active">Charts</a> 
+    </li>    
+  </ul>
+  <button type="button" class="btn btn-primary" (click)="openModal()">Modal</button>  
+</nav>
+<app-modal-window [showModal]="showModal">
+  <span class="header">Header</span>
+  <div class="body">Body</div>
+  <div class="footer">
+    <button class="btn btn-secondary" (click)="showModal = false">Close</button>
+   <button class="btn btn-primary" (click)="showModal = false">OK</button>
+  </div>
+</app-modal-window>

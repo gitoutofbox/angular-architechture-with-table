@@ -1,0 +1,16 @@
+<div class="modal-window" *ngIf="showModal">
+  <div class="card">
+    <div class="modal-header">
+      <ng-content select=".header"></ng-content>
+      <a (click)="close()" class="float-right">&#10006;</a>
+    </div>
+    <div class="modal-body">
+      <ng-content select=".body"></ng-content>
+    </div>
+
+    <div class="modal-footer">
+      <ng-content select=".footer"></ng-content>
+    </div>
+  </div>
+  <div class="overlay"></div>
+</div>
