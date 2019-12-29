@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+// import { ApiService } from 'src/app/core/services/api.service';
+import { ApiService } from '@core/services/api.service';
 
 @Component({
   selector: 'app-list',
@@ -6,10 +8,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+  public tableData: Array<any> = [];
+  public recordsPerPage: number = 2;
+  public currentPage: number = 1;
 
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
+    this.apiService.get('http://localhost:8081/userList').subscribe(resp => {
+      this.tableData = resp['data'];  
+    })
+  }
+  doPaginate(toPage: number) {
+    this.currentPage = toPage;
   }
 
 }
