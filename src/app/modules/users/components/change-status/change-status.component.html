@@ -1,0 +1,6 @@
+
+<a (click)="changeStatus()" *ngIf="!inProgress">
+    <i class="fa fa-check text-success" title="Currently active" aria-hidden="true" *ngIf="data && data.is_active"></i>
+    <i class="fa fa-times text-danger" title="Currently not active" aria-hidden="true" *ngIf="data &&  !data.is_active"></i>
+</a>
+<i class="fa fa-spin fa-circle-o-notch" title="Working..." aria-hidden="true" *ngIf="inProgress"></i>

@@ -18,12 +18,12 @@
       "es2018",
       "dom"
     ],
-    "paths": {
-      "@core/*": [
-        "src/app/core/*"
-      ],
+    "paths": {      
       "@shared/*": [
         "app/shared/*"
+      ],
+      "@core/*": [
+        "src/app/core/*"
       ],
       "@modules/*": [
         "app/modules/*"

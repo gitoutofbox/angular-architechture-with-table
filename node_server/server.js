@@ -121,7 +121,7 @@ app.put('/user/:id', function (req, res) {
     }
   }
   console.log(set)
-  let sql = `UPDATE arc_users SET ${set} WHERE ${where}`;
+  let sql = `UPDATE arc_users SET ${set} WHERE ${where} AND updated_on = NOW()`;
   console.log(sql)
   con.query(sql, (err, rows) => {
     if (err) throw err;
@@ -136,17 +136,19 @@ app.put('/user/:id', function (req, res) {
 
 })
 
-app.delete('/delete/:id', function (req, res) {
-   // First read existing users.
-   user_collection.remove({_id: ObjectId(req.params.id)},{w:1}, function(err, result) {
-    if(err == null) {
-        user_collection.find().toArray(function(err, results){
-          res.end(JSON.stringify( results ));
-        });
-        //res.end(JSON.stringify({'status':'success'}));
-      } else {
-        res.end(JSON.stringify({'status':'error','err':err}));
-      }
+app.delete('/user/:id', function (req, res) {
+    let id = req.params.id;
+    let sql = `DELETE FROM arc_users WHERE user_id = ${id}`;
+  console.log(sql)
+  con.query(sql, (err, rows) => {
+    if (err) throw err;
+    let resp = {
+      status: "success",
+      statusMessage: "",
+      data: rows
+    }
+    //console.log(resp)
+    res.send(resp);
   });
 });
 
