@@ -14,14 +14,20 @@ export class ListComponent implements OnInit {
   public recordsPerPage: number = 2;
   public currentPage: number = 1;
 
+  public orderBy: number = 0;
+  public orderType: string = 'DESC';
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this.getData();
   }
   getData() {
-    this.apiService.get('http://localhost:8081/userList').subscribe(resp => {
-      this.tableData = resp['data'];  
+    const payload = {
+      orderBy   : this.orderBy,
+      orderType : this.orderType
+    }
+    this.apiService.post('http://localhost:8081/userList', payload).subscribe(resp => {
+      this.tableData = resp['data'];
     });
   }
   doPaginate(toPage: number) {
@@ -30,5 +36,31 @@ export class ListComponent implements OnInit {
 
   onDeleteSuccess(resp: Object) {
     this.getData();
+  }
+
+
+  checkAll(e: any) {
+    const checked = e.currentTarget.checked ? true : false;
+    for (let row of this.tableData) {
+      row.isSelected = checked;
+    }
+  }
+  onActionComplete(response) {
+    console.log(response);
+    if(response.status == "success") {
+      this.getData();
+    }
+  }
+
+  
+  doSort(orderBy) {
+    this.orderBy = orderBy;
+    this.orderType =  this.orderType == 'DESC' ? 'ASC' : 'DESC';
+    this.getData();
+  }
+  sortIcon(orderBy) {
+    if(this.orderBy == orderBy){
+      return `<i class="pull-right fa fa-chevron-${this.orderType == 'DESC'? 'down' : 'up'}" aria-hidden="true"></i>`;
+    }
   }
 }

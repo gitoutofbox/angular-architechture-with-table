@@ -15,6 +15,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors())
 
+const users_columnIndexMapping = ["user_first_name", "user_last_name", "user_email", "is_active", "created_on", "updated_on"]
 // mysql
 var con = mysql.createConnection({ 
   host: "localhost", 
@@ -34,33 +35,17 @@ con.connect(function (err) {
 
 });
 
-// var config = {
-//   user: 'root',
-//   password: '',
-//   server: 'localhost', 
-//   database: 'angular_architecture' 
-// };
-// sql.connect(config, function (err) {
-    
-//   if (err) console.log(err);
-
-//   // create Request object
-//   var request = new sql.Request();
-     
-//   // query to the database and get the records
-//   request.query('select * from Student', function (err, recordset) {
-      
-//       if (err) console.log(err)
-
-//       // send records as a response
-//       res.send(recordset);
-      
-//   });
-// });
-
 var base = "/app"
-app.get('/userList', function (req, res) {
-  let sql = "SELECT * FROM arc_users";
+app.post('/userList', function (req, res) {
+  const orderByColIndex = typeof req.body.orderBy !== 'undefined' && req.body.orderBy != '' ? req.body.orderBy : 0;
+  const orderBy = users_columnIndexMapping[orderByColIndex];
+
+  const orderType = req.body.orderType ? req.body.orderType : 'DESC';
+  let sql = `
+  SELECT * FROM arc_users 
+  ORDER BY ${orderBy} ${orderType}
+  `;
+ 
   con.query(sql, (err, rows) => {
     if (err) throw err;
     let resp = {
@@ -71,7 +56,40 @@ app.get('/userList', function (req, res) {
     //console.log(resp)
     res.send(resp);
   });
+})
 
+app.post('/users/status', function (req, res) {
+  console.log(req.body)
+  const user_ids = req.body.ids.join();
+  const status = req.body.status == 'activate'?1:0
+  let sql = `UPDATE arc_users SET is_active='${status}' WHERE user_id IN(${user_ids})`;
+  console.log(sql)
+  con.query(sql, (err, rows) => {
+    if (err) throw err;
+    let resp = {
+      status: "success",
+      statusMessage: "",
+      data: rows
+    }
+    //console.log(resp)
+    res.send(resp);
+  });
+})
+
+app.post('/users/delete', function (req, res) {
+  const user_ids = req.body.join();
+  let sql = `DELETE FROM arc_users WHERE user_id IN(${user_ids})`;
+  console.log(sql)
+  con.query(sql, (err, rows) => {
+    if (err) throw err;
+    let resp = {
+      status: "success",
+      statusMessage: "",
+      data: rows
+    }
+    //console.log(resp)
+    res.send(resp);
+  });
 })
 
 // app.post('/saveUser', function (req, res) {
@@ -120,7 +138,7 @@ app.put('/user/:id', function (req, res) {
       set += `${i} = ${req.body[i]}`;
     }
   }
-  console.log(set)
+
   let sql = `UPDATE arc_users SET ${set} WHERE ${where} AND updated_on = NOW()`;
   console.log(sql)
   con.query(sql, (err, rows) => {
