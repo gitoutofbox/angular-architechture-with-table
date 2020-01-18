@@ -6,7 +6,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./pagination.component.sass']
 })
 export class PaginationComponent implements OnInit {
-  @Input() totalRecords: number = 0;
+  public _totalRecords :number = 0;
+  @Input() set totalRecords(value: number) {
+    this._totalRecords = value;
+    this.ngOnInit();
+
+ }
+
   @Input() recordsPerPage: number = 0;
   @Input() currentPage: number = 8;
   @Input() showAllPages: boolean = false;
@@ -17,8 +23,8 @@ export class PaginationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.totalPage = Math.ceil(this.totalRecords / this.recordsPerPage);
-    console.log(this.totalRecords, this.recordsPerPage, this.totalPage)
+    this.totalPage = Math.ceil(this._totalRecords / this.recordsPerPage);
+    //console.log(this._totalRecords, this.recordsPerPage, this.totalPage)
   }
   doPagination(toPage: number) {
     this.doPaginate.emit(toPage);

@@ -10,12 +10,14 @@ import { ApiService } from '@core/services/api.service';
 export class ListComponent implements OnInit {
   public tableData: Array<any> = [];
 
-  public totalRecords: number = 100;
+  public totalRecords: number = 0;
   public recordsPerPage: number = 2;
   public currentPage: number = 1;
 
   public orderBy: number = 0;
   public orderType: string = 'DESC';
+
+  public searchText: string = '';
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -23,15 +25,21 @@ export class ListComponent implements OnInit {
   }
   getData() {
     const payload = {
-      orderBy   : this.orderBy,
-      orderType : this.orderType
+      orderBy         : this.orderBy,
+      orderType       : this.orderType,
+      currentPage     : this.currentPage,
+      recordsPerPage  : this.recordsPerPage,
+      searchText      : this.searchText
     }
     this.apiService.post('http://localhost:8081/userList', payload).subscribe(resp => {
-      this.tableData = resp['data'];
+      this.tableData    = resp['data']['rows'];
+      this.totalRecords = resp['data']['totalRows'];
+      console.log('this.totalRecords', this.totalRecords)
     });
   }
   doPaginate(toPage: number) {
     this.currentPage = toPage;
+    this.getData();
   }
 
   onDeleteSuccess(resp: Object) {
@@ -62,5 +70,9 @@ export class ListComponent implements OnInit {
     if(this.orderBy == orderBy){
       return `<i class="pull-right fa fa-chevron-${this.orderType == 'DESC'? 'down' : 'up'}" aria-hidden="true"></i>`;
     }
+  }
+
+  performSearch() {
+    this.getData();
   }
 }

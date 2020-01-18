@@ -1,9 +1,22 @@
-<!-- {{tableData | json}} -->
+<div class="clearfix">
+    <h1 class="pull-left">Users list</h1>
+    <h2 class="pull-right">Total records: {{totalRecords}}</h2>
+</div>
 <div>
-
-    <action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown>
-    <a (click)="addUser()">Add user</a>
-
+    <div class="left pull-left">
+        <form class="form-inline">
+            <div class="form-group mr-2">
+                <label for="staticEmail2" class="sr-only">Search:</label>
+                {{searchtext}}
+                <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" />
+            </div>
+            <button class="btn btn-primary" type="button" (click)="performSearch()">GO</button>
+        </form>
+    </div>
+    <div class="right pull-right">
+        <action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown>
+        <a (click)="addUser()">Add user</a>
+    </div>
 </div>
 
 
@@ -27,7 +40,7 @@
             </td>
             <td width="15%">
                 <a (click)="doSort(4)">Created <span [innerHtml]="sortIcon(4)"></span></a>
-                </td>
+            </td>
             <td width="15%">
                 <a (click)="doSort(5)">Modified <span [innerHtml]="sortIcon(5)"></span></a>
             </td>
