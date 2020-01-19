@@ -11,7 +11,7 @@ export class ListComponent implements OnInit {
   public tableData: Array<any> = [];
 
   public totalRecords: number = 0;
-  public recordsPerPage: number = 2;
+  public recordsPerPage: number = 10;
   public currentPage: number = 1;
 
   public orderBy: number = 0;

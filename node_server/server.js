@@ -4,9 +4,9 @@ var express = require('express');
 
 var mysql = require('mysql');
 var sql = require("mssql");
-var cors = require('cors')
-
-
+var cors = require('cors');
+var multer = require('multer');
+const DIR = '../public/images/users/'; 
 var bodyParser = require('body-parser');
 var app = express();
 var user_collection = '';
@@ -73,12 +73,56 @@ app.post('/userList', function (req, res) {
   });
 })
 
-app.post('/users/status', function (req, res) {
-  console.log(req.body)
-  const user_ids = req.body.ids.join();
-  const status = req.body.status == 'activate'?1:0
-  let sql = `UPDATE arc_users SET is_active='${status}' WHERE user_id IN(${user_ids})`;
-  console.log(sql)
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    let fileName = file.originalname.toLowerCase().split(' ').join('-');
+    fileName = fileName.replace(/(\.[\w\d_-]+)$/i, '_' + Date.now() + '_$1');
+    cb(null, fileName)
+  }
+});
+var upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    }
+  }
+});
+
+app.post('/user/add', upload.single('photo'), function (req, res) {
+  const payload = req.body;
+  const filename = req.file.filename;
+  console.log(filename)
+  const sql = `
+  INSERT INTO arc_users (
+    user_email ,
+    user_password ,
+    user_first_name ,
+    user_last_name ,
+    user_photo ,
+    is_active ,
+    created_on ,
+    updated_on
+  ) VALUES (
+    '${payload.email}',
+    '${payload.user_password}',
+    '${payload.first_name}',
+    '${payload.last_name}',
+    '${filename}',
+    ${payload.active ? 1 : 0},
+    NOW(),
+    NOW()
+  )`;
   con.query(sql, (err, rows) => {
     if (err) throw err;
     let resp = {
@@ -86,7 +130,22 @@ app.post('/users/status', function (req, res) {
       statusMessage: "",
       data: rows
     }
-    //console.log(resp)
+    res.send(resp);
+  });
+})
+app.post('/users/status', function (req, res) {
+  console.log(req.body)
+  const user_ids = req.body.ids.join();
+  const status = req.body.status == 'activate'?1:0
+  let sql = `UPDATE arc_users SET is_active='${status}' WHERE user_id IN(${user_ids})`;
+  // console.log(sql)
+  con.query(sql, (err, rows) => {
+    if (err) throw err;
+    let resp = {
+      status: "success",
+      statusMessage: "",
+      data: rows
+    }
     res.send(resp);
   });
 })

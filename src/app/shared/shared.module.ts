@@ -8,12 +8,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 
 import { ChartsModule } from './modules/charts/charts.module';
+import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 // import { DataTableModule } from './modules/data-table/data-table.module';
 // import { ComponentLoaderComponent } from './components/component-loader/component-loader.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, 
+  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, 
    // ComponentLoaderComponent
   ],
   imports: [
@@ -23,7 +24,7 @@ import { ChartsModule } from './modules/charts/charts.module';
     // DataTableModule
   ],
   exports: [HeaderComponent, ModalWindowComponent,
-    PaginationComponent, ChartsModule, 
+    PaginationComponent, ChartsModule, FileUploaderComponent
     // DataTableModule,
     //ComponentLoaderComponent
   ]

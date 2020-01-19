@@ -1,22 +1,26 @@
-<div>
-  Showing: 
-    {{currentPage  * recordsPerPage - recordsPerPage + 1}} to 
-    {{_totalRecords < currentPage  * recordsPerPage ? _totalRecords : currentPage  * recordsPerPage}} 
-    of {{_totalRecords}} records
+<div class="row">
+    <div class="col-sm-4">
+        Showing: 
+          {{currentPage  * recordsPerPage - recordsPerPage + 1}} to 
+          {{_totalRecords < currentPage  * recordsPerPage ? _totalRecords : currentPage  * recordsPerPage}} 
+          of {{_totalRecords}} records
+      </div>
+      <div class="col-sm-8">
+      <ul class="pagination pagination-smx justify-content-end">
+        <li class="page-item first"><a class="page-link" (click)="doPagination( 1 )" *ngIf="currentPage > 1">First</a></li>
+        <li class="page-item previous" *ngIf="currentPage > 1"><a class="page-link" (click)="doPagination( currentPage - 1 )">Previous</a></li>
+        <li class="page-item before page-link-bots" *ngIf="!showAllPages && currentPage - showPageAfter > 1">...</li>
+      
+        <ng-container *ngFor="let record of [].constructor(totalPage) let i = index;" >
+        <li class="page-item page-number"     
+          [ngClass]="{'active':currentPage == i+1}"
+          *ngIf="showAllPages || (   currentPage - (i+1) <= showPageBefore && (i+1) - currentPage <= showPageAfter    )">
+            <a class="page-link" (click)="doPagination(i+1)">{{i+1}}</a>
+          </li>
+        </ng-container>
+        <li class="page-item after page-link-bots" *ngIf="!showAllPages && totalPage - currentPage > showPageAfter">...</li>
+        <li class="page-item next"><a class="page-link next" (click)="doPagination( currentPage + 1 )" *ngIf="currentPage < totalPage">Next</a></li>
+        <li class="page-item last"><a class="page-link last" (click)="doPagination( totalPage )" *ngIf="currentPage < totalPage">Last</a></li>
+      </ul>
+    </div>
 </div>
-<ul class="pagination pagination-smx justify-content-end">
-  <li class="page-item first"><a class="page-link" (click)="doPagination( 1 )" *ngIf="currentPage > 1">First</a></li>
-  <li class="page-item previous" *ngIf="currentPage > 1"><a class="page-link" (click)="doPagination( currentPage - 1 )">Previous</a></li>
-  <li class="page-item before page-link-bots" *ngIf="!showAllPages && currentPage - showPageAfter > 1">...</li>
-
-  <ng-container *ngFor="let record of [].constructor(totalPage) let i = index;" >
-  <li class="page-item page-number"     
-    [ngClass]="{'active':currentPage == i+1}"
-    *ngIf="showAllPages || (   currentPage - (i+1) <= showPageBefore && (i+1) - currentPage <= showPageAfter    )">
-      <a class="page-link" (click)="doPagination(i+1)">{{i+1}}</a>
-    </li>
-  </ng-container>
-  <li class="page-item after page-link-bots" *ngIf="!showAllPages && totalPage - currentPage > showPageAfter">...</li>
-  <li class="page-item next"><a class="page-link next" (click)="doPagination( currentPage + 1 )" *ngIf="currentPage < totalPage">Next</a></li>
-  <li class="page-item last"><a class="page-link last" (click)="doPagination( totalPage )" *ngIf="currentPage < totalPage">Last</a></li>
-</ul>
