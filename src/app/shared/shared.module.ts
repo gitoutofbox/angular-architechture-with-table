@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ModalWindowComponent } from './components/modal-window/modal-window.component';
 
@@ -21,6 +22,7 @@ import { FileUploaderComponent } from './components/file-uploader/file-uploader.
     CommonModule,
     RouterModule,
     ChartsModule,
+    FormsModule
     // DataTableModule
   ],
   exports: [HeaderComponent, ModalWindowComponent,

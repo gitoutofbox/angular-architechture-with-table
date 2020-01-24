@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'file-uploader',
@@ -7,23 +7,28 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class FileUploaderComponent implements OnInit {
   @Output() onFileSelect: EventEmitter<Object> = new EventEmitter();
+  @ViewChild('fileUpoader',{static: false}) fileUpoader: ElementRef<HTMLElement>;
   public image: string;
+  public imageName : string = '';
   constructor() { }
 
   ngOnInit() {
   }
 
+  triggerClick() {
+    let fileElement: HTMLElement = this.fileUpoader.nativeElement;
+    fileElement.click();
+}
   
   selectFile(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
-    // this.userForm.patchValue({ photo: file });
-    // this.photo.updateValueAndValidity();
-
+    this.imageName = file.name;
     // Preview image
      if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         this.image = reader.result as string;
+        console.log('file', this.image['name'])
       };
       reader.readAsDataURL(file);
       this.onFileSelect.emit(file);

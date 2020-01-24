@@ -1,0 +1,21 @@
+.preview{
+    margin-bottom: 5px;
+    img{width:70px;}
+}
+.uploader-wrap {
+    input[type="text"][readonly] {
+        width: 85%;
+        float: left;
+        border-radius: 4px 0 0 4px;
+        background: #fff;
+    }
+    button {
+        width: 15%;
+        background-color: #f2f2f2;
+        border-color: #ddd;
+        border-radius: 0 4px 4px 0;
+        border-left: 0;
+    }
+}
+    
+

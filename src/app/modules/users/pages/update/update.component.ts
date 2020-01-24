@@ -9,9 +9,6 @@ import { ApiService } from '@core/services/api.service';
   styleUrls: ['./update.component.scss']
 })
 export class UpdateComponent implements OnInit {
-  
-
-
   userForm: FormGroup;
   isPhotoError = false;
   image: string;
