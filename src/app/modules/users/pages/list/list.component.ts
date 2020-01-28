@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { ApiService } from 'src/app/core/services/api.service';
 import { ApiService } from '@core/services/api.service';
 
 @Component({
@@ -18,21 +17,22 @@ export class ListComponent implements OnInit {
   public orderType: string = 'DESC';
 
   public searchText: string = '';
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
+  
   ngOnInit() {
     this.getData();
   }
   getData() {
     const payload = {
-      orderBy         : this.orderBy,
-      orderType       : this.orderType,
-      currentPage     : this.currentPage,
-      recordsPerPage  : this.recordsPerPage,
-      searchText      : this.searchText
+      orderBy: this.orderBy,
+      orderType: this.orderType,
+      currentPage: this.currentPage,
+      recordsPerPage: this.recordsPerPage,
+      searchText: this.searchText
     }
     this.apiService.post('http://localhost:8081/userList', payload).subscribe(resp => {
-      this.tableData    = resp['data']['rows'];
+      this.tableData = resp['data']['rows'];
       this.totalRecords = resp['data']['totalRows'];
       console.log('this.totalRecords', this.totalRecords)
     });
@@ -55,20 +55,20 @@ export class ListComponent implements OnInit {
   }
   onActionComplete(response) {
     console.log(response);
-    if(response.status == "success") {
+    if (response.status == "success") {
       this.getData();
     }
   }
 
-  
+
   doSort(orderBy) {
     this.orderBy = orderBy;
-    this.orderType =  this.orderType == 'DESC' ? 'ASC' : 'DESC';
+    this.orderType = this.orderType == 'DESC' ? 'ASC' : 'DESC';
     this.getData();
   }
   sortIcon(orderBy) {
-    if(this.orderBy == orderBy){
-      return `<i class="pull-right fa fa-chevron-${this.orderType == 'DESC'? 'down' : 'up'}" aria-hidden="true"></i>`;
+    if (this.orderBy == orderBy) {
+      return `<i class="pull-right fa fa-chevron-${this.orderType == 'DESC' ? 'down' : 'up'}" aria-hidden="true"></i>`;
     }
   }
 

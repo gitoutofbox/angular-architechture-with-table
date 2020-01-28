@@ -10,12 +10,13 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 
 import { ChartsModule } from './modules/charts/charts.module';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 // import { DataTableModule } from './modules/data-table/data-table.module';
 // import { ComponentLoaderComponent } from './components/component-loader/component-loader.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, 
+  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent, 
    // ComponentLoaderComponent
   ],
   imports: [
@@ -26,7 +27,8 @@ import { FileUploaderComponent } from './components/file-uploader/file-uploader.
     // DataTableModule
   ],
   exports: [HeaderComponent, ModalWindowComponent,
-    PaginationComponent, ChartsModule, FileUploaderComponent
+    PaginationComponent, ChartsModule, FileUploaderComponent,
+    AutocompleteComponent
     // DataTableModule,
     //ComponentLoaderComponent
   ]

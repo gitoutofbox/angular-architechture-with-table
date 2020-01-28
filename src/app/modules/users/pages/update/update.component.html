@@ -63,6 +63,7 @@
             <div class="invalid-feedback" *ngIf="submitted && userForm.controls.photo.invalid">
                 <div *ngIf="userForm.controls.photo.errors.required">Photo is required</div>
             </div>
+            <div class="text-danger"  *ngIf="uploadError">{{uploadError}}</div>
         </div>
     </div>
 

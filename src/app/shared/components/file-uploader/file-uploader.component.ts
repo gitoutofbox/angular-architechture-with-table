@@ -8,12 +8,10 @@ import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '
 export class FileUploaderComponent implements OnInit {
   @Output() onFileSelect: EventEmitter<Object> = new EventEmitter();
   @ViewChild('fileUpoader',{static: false}) fileUpoader: ElementRef<HTMLElement>;
-  public image: string;
-  public imageName : string = '';
+  public image      : string = '';
+  public imageName  : string = '';
   constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   triggerClick() {
     let fileElement: HTMLElement = this.fileUpoader.nativeElement;
@@ -21,14 +19,13 @@ export class FileUploaderComponent implements OnInit {
 }
   
   selectFile(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.imageName = file.name;
+    const file      = (event.target as HTMLInputElement).files[0];
+    this.imageName  = file.name;
     // Preview image
      if (file) {
-      const reader = new FileReader();
+      const reader  = new FileReader();
       reader.onload = () => {
-        this.image = reader.result as string;
-        console.log('file', this.image['name'])
+        this.image  = reader.result as string;
       };
       reader.readAsDataURL(file);
       this.onFileSelect.emit(file);

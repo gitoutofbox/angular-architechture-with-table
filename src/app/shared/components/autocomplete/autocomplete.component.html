@@ -1,0 +1,7 @@
+<div>
+    <input class="form-control" [(ngModel)]="autoCompleteNgModel" type="text" name="autoCompleteNgModel" (ngModelChange)="this.autoCompleteUpdate.next($event)">
+    <br />
+    this.timerToCallApi: {{this.timerToCallApi / 1000}}
+    <br />
+    timerToGetresponse: {{timerToGetresponse / 1000}}
+</div>

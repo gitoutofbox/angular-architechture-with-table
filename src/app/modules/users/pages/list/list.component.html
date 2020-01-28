@@ -7,10 +7,14 @@
         <form class="form-inline">
             <div class="form-group mr-2">
                 <label for="staticEmail2" class="sr-only">Search:</label>
-                {{searchtext}}
                 <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" />
             </div>
+            <div class="form-group mr-2">
+                <label for="staticEmail2" class="sr-only">Search:</label>
+                <input type="text" class="form-control" placeholder="Autocomplete search user name" />
+            </div>
             <button class="btn btn-primary" type="button" (click)="performSearch()">GO</button>
+            <autocomplete></autocomplete>
         </form>
     </div>
     <div class="right pull-right">

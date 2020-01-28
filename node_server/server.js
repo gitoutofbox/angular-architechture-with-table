@@ -80,7 +80,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     let fileName = file.originalname.toLowerCase().split(' ').join('-');
-    fileName = fileName.replace(/(\.[\w\d_-]+)$/i, '_' + Date.now() + '_$1');
+    fileName = fileName.replace(/(\.[\w\d_-]+)$/i, '_' + Date.now() + '$1');
     cb(null, fileName)
   }
 });
@@ -93,16 +93,27 @@ var upload = multer({
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
       cb(null, true);
     } else {
-      cb(null, false);
-      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      req.fileTypeValidationError = 'Only .png, .jpg and .jpeg format allowed!'
+      //cb(null, false);
+      return cb(null, false, req.fileTypeValidationError);
     }
   }
 });
 
 app.post('/user/add', upload.single('photo'), function (req, res) {
+  if(req.fileTypeValidationError) {
+    let resp = {
+      status: "fail",
+      statusMessage: req.fileTypeValidationError,
+      data: []
+    }
+    res.send(resp);
+    return false;
+  }
+  
   const payload = req.body;
   const filename = req.file.filename;
-  console.log(filename)
+  
   const sql = `
   INSERT INTO arc_users (
     user_email ,
@@ -150,6 +161,11 @@ app.post('/users/status', function (req, res) {
   });
 })
 
+app.get('/email/get', function (req, res) {
+  setTimeout(()=>{
+    res.send({status: "succes"});
+  }, 5000)
+});
 app.post('/users/delete', function (req, res) {
   const user_ids = req.body.join();
   let sql = `DELETE FROM arc_users WHERE user_id IN(${user_ids})`;
@@ -164,43 +180,7 @@ app.post('/users/delete', function (req, res) {
     //console.log(resp)
     res.send(resp);
   });
-})
-
-// app.post('/saveUser', function (req, res) {
-
-//   if(req.body._id) {
-//     user_collection.update(
-//       {_id: ObjectId(req.body._id)}, 
-//       {$set: 
-//         {'name': req.body.name, 'password':req.body.password, 'profession':req.body.profession}
-//       }, 
-//       {w: 1}, 
-//       function(err, records){
-//         if(err == null) {
-//           res.end(JSON.stringify({'status':'success'}));
-//         } else {
-//           res.end(JSON.stringify({'status':'error','err':err}));
-//         }
-//       }
-//     );
-//   } else {
-//     user_collection.insert(req.body, {w: 1}, function(err, records){
-//       if(err == null) {
-//         //console.log("Record added as "+ JSON.stringify(records) );
-//         res.end(JSON.stringify({'status':'success'}));
-//       } else {
-//         res.end(JSON.stringify({'status':'error','err':err}));
-//       }
-//     });
-//   }
-// })
-
-
-// app.get('/user/:id', function (req, res) {
-//    user_collection.find({_id: ObjectId(req.params.id)}).toArray(function(err, results){
-//     res.end(JSON.stringify( results[0] ));
-//   });
-// })
+});
 
 app.put('/user/:id', function (req, res) {
   let set = '';

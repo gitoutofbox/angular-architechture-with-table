@@ -13,7 +13,7 @@ export class UpdateComponent implements OnInit {
   isPhotoError = false;
   image: string;
   submitted : boolean = false;
-
+  uploadError: string = '';
   constructor(private fb: FormBuilder, private router: Router, private apiService: ApiService) { }
 
   ngOnInit() {
@@ -39,9 +39,8 @@ export class UpdateComponent implements OnInit {
     if (this.userForm.get('photo').invalid) {
       this.isPhotoError = true;
     }
+    this.uploadError = '';
     const formData = new FormData();
-    
-    // console.log(this.userForm.controls);
     formData.append("first_name", this.userForm.controls.first_name.value);
     formData.append("last_name", this.userForm.controls.last_name.value);
     formData.append("email", this.userForm.controls.email.value);
@@ -50,7 +49,14 @@ export class UpdateComponent implements OnInit {
     formData.append('photo', this.userForm.get('photo').value);
   
     this.apiService.post('http://localhost:8081/user/add', formData).subscribe(resp => {
+      if(resp['status'] != 'success') {
+        this.uploadError = resp['statusMessage'];
+        return;
+      }
       this.router.navigate(['/users'])
+    }, (resp)=> {
+      this.uploadError = 'Some error occured please try later';
+      console.log(resp);
     });
 
 
