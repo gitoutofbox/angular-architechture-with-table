@@ -1,0 +1,26 @@
+.filter-main{
+    z-index: 1;
+    padding: 10px;
+    position: relative;
+    .filter-and-or{margin-bottom: 5px;}
+    ul {
+        padding:0;
+        margin:0;
+        li{
+            padding:5px; padding-left:0; list-style-type: none;
+            cursor: pointer;
+            &:hover{ 
+                background: #eee;
+            }
+        }
+    }
+}
+.filters-block{
+    position:absolute;
+     width:300px; 
+     min-height:230px; 
+     border:1px solid #dee2e6; 
+     background: #fff;
+     padding:15px; 
+    // .filter{padding: 15px;}
+}

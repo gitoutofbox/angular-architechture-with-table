@@ -161,10 +161,23 @@ app.post('/users/status', function (req, res) {
   });
 })
 
-app.get('/email/get', function (req, res) {
+app.get('/email/get/:text', function (req, res) {
+  const text = req.params.text;
   setTimeout(()=>{
-    res.send({status: "succes"});
-  }, 5000)
+    //res.send({status: "succes"});
+    const sql = `SELECT user_id, user_email FROM arc_users WHERE user_email LIKE '%${text}%'`;
+    console.log(sql)
+    con.query(sql, (err, rows) => {
+      if (err) throw err;
+      let resp = {
+        status: "success",
+        statusMessage: "",
+        data: rows
+      }
+      //console.log(resp)
+      res.send(resp);
+    })
+    }, 5000)
 });
 app.post('/users/delete', function (req, res) {
   const user_ids = req.body.join();

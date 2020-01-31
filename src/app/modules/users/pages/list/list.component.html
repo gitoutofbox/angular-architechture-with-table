@@ -16,6 +16,7 @@
             <button class="btn btn-primary" type="button" (click)="performSearch()">GO</button>
             <autocomplete></autocomplete>
         </form>
+        <filters></filters>
     </div>
     <div class="right pull-right">
         <action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown>

@@ -1,0 +1,29 @@
+.autoComplete-main{
+    position:relative;
+    // .results{
+    //     position: absolute;
+    //     width: 100%;
+    //     height:200px;
+    //     border:1px solid #ddd;
+    // }
+    .input-wrap{position: relative;
+        i{position: absolute; right: 5px; top:10px;}
+    }
+    .results{
+        max-height: 100px;
+        border:1px solid #ddd;
+        overflow: auto;
+        background: #fff;
+        ul{
+            padding:0;
+            margin: 0;
+            li{
+                padding: 5px;
+                cursor: pointer;
+                &:hover{
+                    background:#eee;
+                }
+            }
+        }
+    }
+}

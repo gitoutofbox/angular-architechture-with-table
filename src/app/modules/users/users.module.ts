@@ -12,6 +12,7 @@ import { ChangeStatusComponent } from './components/change-status/change-status.
 import { ActionEditComponent } from './components/action-edit/action-edit.component';
 import { ActionDeleteComponent } from './components/action-delete/action-delete.component';
 import { ActionDropdownComponent } from './components/action-dropdown/action-dropdown.component';
+import { FiltersComponent } from './components/filters/filters.component';
 
 const routes: Routes = [
   { path: '', component: ListComponent },
@@ -25,7 +26,7 @@ const routes: Routes = [
     UpdateComponent, 
     ChangeStatusComponent, 
     ActionEditComponent,  
-    ActionDeleteComponent, ActionDropdownComponent
+    ActionDeleteComponent, ActionDropdownComponent, FiltersComponent
   ],
   imports: [
     CommonModule,

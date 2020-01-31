@@ -1,0 +1,33 @@
+<div class="filter-main">
+    
+    <a (click)="$event.stopPropagation(); openFilters()">+Filter</a>
+    <div class="filters-block" *ngIf="showFilters" (click)="$event.stopPropagation()">
+        <div class="row filter-and-or">
+            <div class="col col-sm-4">Filter By:</div>
+            <div class="col col-sm-8">
+                <select class="form-control form-control-sm" [(ngModel)]="filterConnector">
+                    <option value="and">And</option>
+                    <option value="or">Or</option>
+                </select>
+            </div>
+        </div>
+       
+        <ul *ngIf="filter == ''">
+            <li><a (click)="showFilter('first_name')">First Name</a></li>
+            <li><a (click)="showFilter('last_name')">Last Name</a></li>
+            <li><a (click)="showFilter('email')">Email</a></li>
+            <li><a (click)="showFilter('created')">Created On</a></li>
+        </ul>        
+        <div class="row filter" *ngIf="filter == 'email'">
+            <div class="col col-sm-2">Email: </div>
+            <div class="col-sm-10"><autocomplete (onSelect)="onSelect($event)"></autocomplete></div>
+        </div>
+        <div class="row" >           
+            <div class="col-sm-12 text-right">
+                <button class="btn btn-sm btn-default">Cancel</button>
+                <button class="btn btn-sm btn-primary">Apply</button>
+            </div>
+        </div>
+    </div>
+
+</div>

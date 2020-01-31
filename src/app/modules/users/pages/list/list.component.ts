@@ -17,6 +17,7 @@ export class ListComponent implements OnInit {
   public orderType: string = 'DESC';
 
   public searchText: string = '';
+
   constructor(private apiService: ApiService) {}
 
   
@@ -75,4 +76,5 @@ export class ListComponent implements OnInit {
   performSearch() {
     this.getData();
   }
+  
 }
