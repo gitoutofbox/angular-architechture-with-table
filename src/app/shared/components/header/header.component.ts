@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
   currentUser: User;
