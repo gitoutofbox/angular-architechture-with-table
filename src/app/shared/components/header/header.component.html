@@ -1,4 +1,4 @@
-<a [routerLink]="skipNavigation">Skip to main content</a>
+<!-- <a [routerLink]="skipNavigation">Skip to main content</a> -->
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
   <ul class="navbar-nav">
     <li class="nav-item">
@@ -22,9 +22,11 @@
     </li> 
     <li class="nav-item">
       <a class="nav-link" routerLink="charts" routerLinkActive="active">Charts</a> 
-    </li>    
+    </li>  
+    <li class="nav-item">
+      <a class="nav-link" (click)="openModal()">Modal</a> 
+    </li>  
   </ul>
-  <button type="button" class="btn btn-primary" (click)="openModal()">Modal</button>  
 </nav>
 <app-modal-window [showModal]="showModal">
   <span class="header">Header</span>
