@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormArray,FormBuilder,FormGroup,FormControl, Validators, NgForm} from "@angular/forms";
 import {Router} from "@angular/router"
 import { ApiService } from '@core/services/api.service';
+import { exhaustMap } from 'rxjs/operators';
+import { pipe, interval } from 'rxjs';
 
 @Component({
   selector: 'app-update',
@@ -48,6 +50,17 @@ export class UpdateComponent implements OnInit {
     formData.append("active", this.userForm.controls.active.value);    
     formData.append('photo', this.userForm.get('photo').value);
   
+    // interval(1000).pipe(exhaustMap(() => this.apiService.post('http://localhost:8081/user/add', formData))).subscribe(resp => {
+    //     if(resp['status'] != 'success') {
+    //       this.uploadError = resp['statusMessage'];
+    //       return;
+    //     }
+    //     this.router.navigate(['/users'])
+    //   }, (resp)=> {
+    //     this.uploadError = 'Some error occured please try later';
+    //     console.log(resp);
+    //   });
+    // );
     this.apiService.post('http://localhost:8081/user/add', formData).subscribe(resp => {
       if(resp['status'] != 'success') {
         this.uploadError = resp['statusMessage'];

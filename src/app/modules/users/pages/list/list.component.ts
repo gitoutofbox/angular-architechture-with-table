@@ -17,7 +17,9 @@ export class ListComponent implements OnInit {
   public orderType: string = 'DESC';
 
   public searchText: string = '';
-
+  public filterBy : any = {
+    "email" : {"label": "Email", "filterValue": "test@test.com3"}
+  };
   constructor(private apiService: ApiService) {}
 
   
@@ -30,7 +32,8 @@ export class ListComponent implements OnInit {
       orderType: this.orderType,
       currentPage: this.currentPage,
       recordsPerPage: this.recordsPerPage,
-      searchText: this.searchText
+      searchText: this.searchText,
+      filterBy: this.filterBy
     }
     this.apiService.post('http://localhost:8081/userList', payload).subscribe(resp => {
       this.tableData = resp['data']['rows'];
@@ -73,8 +76,24 @@ export class ListComponent implements OnInit {
     }
   }
 
-  performSearch() {
-    this.getData();
-  }
   
+  onFilterApply(filter: Object) {
+    // console.log('filter', filter)
+    for(const [key, value] of Object.entries(this.filterBy)) {     
+      if(key == filter['key']) {        
+         value['filterValue'] = filter['value']['value']['user_email']
+      }
+    }
+    // console.log('this.filterBy', this.filterBy)
+  //   let where = '1 = 1';
+    
+  //   switch(filter['field']) {
+  //     case 'email':
+  //         this.filterArr.push({"field": "Email", "value": filter['value']['user_email']});
+  //         where += ` AND email = ${filter['value']['user_email']}`;
+  //       break
+  //   }
+  //   this.searchText = where;
+  //   this.getData();
+   }
 }

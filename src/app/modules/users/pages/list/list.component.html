@@ -3,20 +3,8 @@
     <h2 class="pull-right">Total records: {{totalRecords}}</h2>
 </div>
 <div>
-    <div class="left pull-left">
-        <form class="form-inline">
-            <div class="form-group mr-2">
-                <label for="staticEmail2" class="sr-only">Search:</label>
-                <input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" />
-            </div>
-            <div class="form-group mr-2">
-                <label for="staticEmail2" class="sr-only">Search:</label>
-                <input type="text" class="form-control" placeholder="Autocomplete search user name" />
-            </div>
-            <button class="btn btn-primary" type="button" (click)="performSearch()">GO</button>
-            <autocomplete></autocomplete>
-        </form>
-        <filters></filters>
+    <div class="left pull-left">        
+        <filters [filteredData]="filterBy" (onFilterApply)="onFilterApply($event)"></filters>
     </div>
     <div class="right pull-right">
         <action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown>
