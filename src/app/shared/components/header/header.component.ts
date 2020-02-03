@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../../core/services/authentication.service';
-import { User } from '../../../core/models/user';
+import { AuthenticationService } from '@shared/services/authentication.service';
+import { User } from '@core/models/user';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 

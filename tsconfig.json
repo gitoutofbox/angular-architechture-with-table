@@ -20,13 +20,13 @@
     ],
     "paths": {      
       "@shared/*": [
-        "app/shared/*"
+        "src/app/shared/*"
       ],
       "@core/*": [
         "src/app/core/*"
       ],
       "@modules/*": [
-        "app/modules/*"
+        "src/app/modules/*"
       ]
     }
   },
