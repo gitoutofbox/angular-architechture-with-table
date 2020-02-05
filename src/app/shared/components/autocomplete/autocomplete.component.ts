@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
-import { ApiService } from '@core/services/api.service';
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   selector: 'autocomplete',

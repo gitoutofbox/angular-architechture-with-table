@@ -6,7 +6,7 @@
         </div>
     </div>
     <a (click)="$event.stopPropagation(); openFilters()">+Filter</a>
-    <div class="filters-block theme-block" *ngIf="showFilters" (click)="$event.stopPropagation()">
+    <div class="filters-block" *ngIf="showFilters" (click)="$event.stopPropagation()">
         <div class="row filter-and-or">
             <div class="col col-sm-4">Filter By:</div>
             <!-- <div class="col col-sm-8">

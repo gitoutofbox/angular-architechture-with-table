@@ -14,6 +14,10 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 // import { DataTableModule } from './modules/data-table/data-table.module';
 // import { ComponentLoaderComponent } from './components/component-loader/component-loader.component';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '@shared/interceptors/jwt.interceptor';
+import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
+
 
 @NgModule({
   declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent, 
@@ -25,6 +29,13 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
     ChartsModule,
     FormsModule
     // DataTableModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    // fakeBackendProvider
   ],
   exports: [HeaderComponent, ModalWindowComponent,
     PaginationComponent, ChartsModule, FileUploaderComponent,

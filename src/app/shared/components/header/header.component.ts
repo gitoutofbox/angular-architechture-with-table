@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '@shared/services/authentication.service';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -19,7 +19,6 @@ export class HeaderComponent {
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     
-      
 
       router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
         if( ! this.router.url.endsWith('#main-content')) {

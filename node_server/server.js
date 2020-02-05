@@ -237,6 +237,38 @@ app.delete('/user/:id', function (req, res) {
   });
 });
 
+app.post('/user/authenticate', function (req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  const sql = `SELECT * FROM arc_users WHERE user_email = '${email}' AND user_password= '${password}'`;
+console.log(sql)
+con.query(sql, (err, rows) => {
+  console.log('rows', rows)  
+  if (err) throw err;
+  let resp;
+  if(rows.length > 1) {
+    resp = {
+      status: "fail",
+      statusMessage: "",
+      data: []
+    }
+  } else if(rows.length == 0) {
+    resp = {
+      status: "fail",
+      statusMessage: "",
+      data: []
+    }
+  }else {
+    resp = {
+      status: "success",
+      statusMessage: "",
+      data: rows[0]
+    }
+  }
+  res.send(resp);
+});
+});
+
 // app.get('/*.html', function (req, res) {	
 //    res.sendFile( __dirname + base +  "/" + req.params[0] + '.html' );
 // });

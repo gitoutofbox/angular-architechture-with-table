@@ -20,15 +20,28 @@ table, .table {
     color:#fff;
 }
 
-.card-header{background-color: rgb(93, 43, 69);}
-.btn-primary {
-    color: #fff;
-    background-color: #5a2640;
-    border-color: #f2a885;
-}
 
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #551e39;
-    border-color: #f2a885;
+
+
+/***************** Theming Starts ***********************/
+.theme-block {
+    color:#fff;
+    background-color: #5a2640;
+    .card-header{background-color: rgb(93, 43, 69);}
+    .btn-primary {
+        color: #fff;
+        background-color: #5a2640;
+        border-color: #f2a885;
+    }
+    
+    .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+        color: #fff;
+        background-color: #551e39;
+        border-color: #f2a885;
+    }
+    button{color: #fff;}
+    .theme-block{
+        background-color: #5A2624;
+    }
 }
+/***************** Theming Ends ***********************/

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './core/authentication';
+import { AuthGuard } from '@shared/guards/auth.guard';
 
 import { ChartsComponent } from './components/charts/charts.component';
 
