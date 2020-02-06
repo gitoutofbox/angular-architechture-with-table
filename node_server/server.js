@@ -8,6 +8,9 @@ var cors = require('cors');
 var multer = require('multer');
 const DIR = '../public/images/users/'; 
 var bodyParser = require('body-parser');
+
+let user = require('./routes/user')
+var router=express.Router();
 var app = express();
 var user_collection = '';
 app.use(express.static('app'));
@@ -16,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors())
 
 const users_columnIndexMapping = ["user_first_name", "user_last_name", "user_email", "is_active", "created_on", "updated_on"]
+global.users_columnIndexMapping = users_columnIndexMapping;
 // mysql
 var con = mysql.createConnection({ 
   host: "localhost", 
@@ -36,42 +40,28 @@ con.connect(function (err) {
 });
 
 var base = "/app"
-app.post('/userList', function (req, res) {
-  const orderByColIndex = typeof req.body.orderBy !== 'undefined' && req.body.orderBy != '' ? req.body.orderBy : 0;
-  const orderByColumn   = users_columnIndexMapping[orderByColIndex];
-  const orderType       = req.body.orderType ? req.body.orderType : 'DESC';
-  //Pagination
-  const currentPage = typeof req.body.currentPage !== 'undefined' && req.body.currentPage != '' ? req.body.currentPage : 1;
-  const recordsPerPage = typeof req.body.recordsPerPage !== 'undefined' && req.body.recordsPerPage != '' ? req.body.recordsPerPage : 100;
-  const searchText = typeof req.body.searchText !== 'undefined' && req.body.searchText != '' ? req.body.searchText : '';
-  
-  let whereArr = []; //       = `1 = 1`;
-  if(searchText != '') {
-    whereArr.push(`user_first_name LIKE '%${searchText}%' OR user_last_name LIKE '%${searchText}%'`)
-  }
-  let where = '1 = 1 ';
-  if(whereArr.length) { where += 'AND ' + whereArr.join(' AND ');}
-  const orderBy   = `ORDER BY ${orderByColumn} ${orderType}`;
-  const limit     = `LIMIT ${(currentPage - 1) * recordsPerPage}, ${recordsPerPage}`;
-  const sqlSelect = `SELECT * FROM arc_users WHERE ${where} ${orderBy} ${limit}`;
-  const sqlCount   = `SELECT COUNT(*) as total_row FROM arc_users WHERE ${where}`;
+global.db = con;
 
-  console.log(sqlSelect);
-//  console.log(sqlCount);
-  con.query(sqlSelect, (err, rows) => {
-    if (err) throw err;
+// router.use(function(req,res,next){
+//   var token= req.body.Authtoken || req.headers['Authtoken'];
+//   console.log('token', token)
+//   if(token){
+//       jwt.verify(token,process.env.SECRET_KEY,function(err,ress){
+//           if(err){
+//               res.status(500).send('Token Invalid');
+//           }else{
+//               next();
+//           }
+//       })
+//   }else{
+//       res.send('Please send a token')
+//   }
+// })
 
-    con.query(sqlCount, (err, countRows) => {      
-      if (err) throw err;
-      let resp = {
-        status: "success",
-        statusMessage: "",
-        data: {"rows": rows, "totalRows": countRows[0]['total_row']}
-      }
-      res.send(resp);
-    });
-  });
-})
+app.post('/user/login', user.login);
+
+
+app.post('/userList', user.userList);
 
 
 const storage = multer.diskStorage({
@@ -236,56 +226,3 @@ app.delete('/user/:id', function (req, res) {
     res.send(resp);
   });
 });
-
-app.post('/user/authenticate', function (req, res) {
-  const email = req.body.email;
-  const password = req.body.password;
-  const sql = `SELECT * FROM arc_users WHERE user_email = '${email}' AND user_password= '${password}'`;
-console.log(sql)
-con.query(sql, (err, rows) => {
-  console.log('rows', rows)  
-  if (err) throw err;
-  let resp;
-  if(rows.length > 1) {
-    resp = {
-      status: "fail",
-      statusMessage: "",
-      data: []
-    }
-  } else if(rows.length == 0) {
-    resp = {
-      status: "fail",
-      statusMessage: "",
-      data: []
-    }
-  }else {
-    resp = {
-      status: "success",
-      statusMessage: "",
-      data: rows[0]
-    }
-  }
-  res.send(resp);
-});
-});
-
-// app.get('/*.html', function (req, res) {	
-//    res.sendFile( __dirname + base +  "/" + req.params[0] + '.html' );
-// });
-// app.get('/', function (req, res) {
-//    res.sendFile( __dirname +  "/" + 'index.html' );
-// })
-
-
-
-// MongoClient.connect("mongodb://localhost:27017/mystore", function(err, db) {
-//   if(err) { return console.dir(err); }
-//   user_collection = db.collection('mystore_users');
-
-//   var server = app.listen(8081, function () {
-//      var host = server.address().address
-//      var port = server.address().port
-
-//      console.log("Example app listening at http://%s:%s", host, port)
-//   });
-// });

@@ -21,21 +21,23 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.apiService.post(`http://localhost:8081/user/authenticate`, { "email": username, "password": password })
+        return this.apiService.post(`http://localhost:8081/user/login`, { "email": username, "password": password })
             .pipe(
                 map((user) => {
                 console.log('user', user['data'])
-                if(user['status'] !== 'success' || !user['data']) {                   
+                
+                if(user['status'] !== 'success' || !user['data'] || !user['data']['userInfo']) {                   
                     throw new Error('Invalid login credentials');
                 }
+                const userInfo = user['data']['userInfo'];
                 const currentUser = {
-                    "id": user['data']['user_id'],
-                    "username": user['data']['user_email'],
-                    "firstName": user['data']['user_first_name'],
-                    "lastName": user['data']['user_last_name'],
-                    "photo": user['data']['user_photo'],
-                    "status": user['data']['is_active'],
-                    "token": "sfsdfsdf"
+                    "id"        : userInfo['user_id'],
+                    "username"  : userInfo['user_email'],
+                    "firstName" : userInfo['user_first_name'],
+                    "lastName"  : userInfo['user_last_name'],
+                    "photo"     : userInfo['user_photo'],
+                    "status"    : userInfo['is_active'],
+                    "authToken" : user['data']['authToken']
                 };
                 console.log(currentUser)
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));

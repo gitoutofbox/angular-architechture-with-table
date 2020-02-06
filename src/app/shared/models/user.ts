@@ -6,5 +6,5 @@ export class User {
     lastName: string;
     photo?:string;
     status?:boolean;
-    token?: string;
+    authToken?: string;
 }
