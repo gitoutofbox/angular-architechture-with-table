@@ -6,7 +6,14 @@
         [routerLinkActiveOptions]="{ exact: true }">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="about" routerLinkActive="active">About</a>
+      <a class="nav-link" [routerLinkActiveOptions]="{exact: false}" routerLinkActive="active">About</a>
+      <ul>
+        <li><a class="nav-link" routerLink="about/about-us" routerLinkActive="active">About Us</a></li>
+        <li><a class="nav-link" routerLink="about/our-clients" routerLinkActive="active">Our Clients</a></li>
+        <li><a class="nav-link" routerLink="about/our-services" routerLinkActive="active">Services</a></li>
+        <li><a class="nav-link" routerLink="about/our-partners" routerLinkActive="active">Partners</a></li>
+        <li><a class="nav-link" routerLink="about/career-with-us" routerLinkActive="active">Career with us</a></li>
+      </ul>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="users" routerLinkActive="active">Users</a>
@@ -28,11 +35,12 @@
     </li>  
   </ul>
 </nav>
-<app-modal-window [showModal]="showModal">
-  <span class="header">Header</span>
-  <div class="body">Body</div>
+
+<app-modal-window [showModal]="showModalNoAccess">
+  <span class="header">{{modalHeaderNoAccess}}</span>
+  <div class="body">{{modalBodyNoAccess}}</div>
   <div class="footer">
-    <button class="btn btn-secondary" (click)="showModal = false">Close</button>
-   <button class="btn btn-primary" (click)="showModal = false">OK</button>
+    <button class="btn btn-secondary" (click)="showModalNoAccess = false">Close</button>
+   <!-- <button class="btn btn-primary" (click)="showModal = false">OK</button> -->
   </div>
 </app-modal-window>
