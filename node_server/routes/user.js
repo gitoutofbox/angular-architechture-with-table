@@ -1,113 +1,13 @@
-var jwt = require('jsonwebtoken');
-var atob = require('atob');
-// var Cryptr = require('cryptr'),
-//     cryptr = new Cryptr('myTotalySecretKey');
-var express = require('express');
-var router = express.Router();
-const SECRET_KEY = 'mySecretKey'
-const verifyToken = function (token) {
-    try {
-        return jwt.verify(token, SECRET_KEY);
-    } catch (err) {
-        return false;
-    }
-}
-
-// app.use(function (err, req, res, next) {
-//     if (err.name === 'UnauthorizedError') { 
-//       res.send(401, 'invalid token...');
-//     }
-//   });
-
-exports.login = function (req, res) {
-    // var name=req.body.email;
-    // var pass= req.body.password;
-    // var dec_pass =atob(pass);
-    // var encrypted_pass = cryptr.encrypt(dec_pass);
-
-    const email = req.body.email;
-    const password = req.body.password;
-    const sql = `SELECT * FROM arc_users WHERE user_email = '${email}' AND user_password= '${password}'`;
-    let response;
-    db.query(sql, function (err, results) {
-        if (err) throw err;
-        if (results != "") {
-            // console.log(JSON.stringify(results));
-            var data = JSON.stringify(results);
-            var secret = SECRET_KEY;
-            var now = Math.floor(Date.now() / 1000),
-                iat = (now - 10),
-                expiresIn = 3600000,
-                expr = (now + expiresIn),
-                notBefore = (now - 10),
-                jwtId = Math.random().toString(36).substring(7);
-            var payload = {
-                iat: iat,
-                jwtid: jwtId,
-                audience: 'TEST',
-                data: data
-            };
-            jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: expiresIn }, function (err, token) {
-                if (err) {
-                    console.log('Error occurred while generating token');
-                    console.log(err);
-                    throw err;
-                    //    return false;
-                } else {
-                    if (token != false) {
-                        res.header();
-                        response = {
-                            status: "success",
-                            statusMessage: ``,
-                            data: {
-                                userInfo: results[0],
-                                authToken: token
-                            }
-                        }
-                        res.send(response);
-                        res.end();
-                    }
-                    else {
-                        response = {
-                            status: "fail",
-                            statusMessage: `Could not create token`,
-                            data: {}
-                        }
-                        res.send(response);
-                        res.end();
-                    }
-                }
-            });
-
-        }
-        else if (results == "") {
-            response = {
-                status: "fail",
-                statusMessage: `User not found`,
-                data: {}
-            }
-            res.send(response);
-            res.end();
-        }
-    });
-};
-
-
-
-
+const auth = require('./auth')
+const users_columnIndexMapping = ["user_first_name", "user_last_name", "user_email", "is_active", "created_on", "updated_on"];
 exports.userList = function (req, res) {
     var token = req.body.authtoken || req.headers['authtoken'];
-    if (!verifyToken(token, SECRET_KEY)) {
-        
-        // res.send(401, 'missing authorization header');
-    //   res.send(401);
-
-        res.send({
+    if (!auth.verifyToken(token, SECRET_KEY)) {
+        return res.status(401).send({
             status: "fail",
             statusMessage: "Invalid token",
             data: {}
         });
-        res.end();
     }
     const orderByColIndex = typeof req.body.orderBy !== 'undefined' && req.body.orderBy != '' ? req.body.orderBy : 0;
     const orderByColumn = users_columnIndexMapping[orderByColIndex];
@@ -130,10 +30,10 @@ exports.userList = function (req, res) {
 
     // console.log(sqlSelect);
     //  console.log(sqlCount);
-    db.query(sqlSelect, (err, rows) => {
+    database.query(sqlSelect, (err, rows) => {
         if (err) throw err;
 
-        db.query(sqlCount, (err, countRows) => {
+        database.query(sqlCount, (err, countRows) => {
             if (err) throw err;
             let resp = {
                 status: "success",

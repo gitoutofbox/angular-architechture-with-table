@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { AuthenticationService } from '@shared/services/authentication.service';
 
@@ -14,11 +15,25 @@ export class JwtInterceptor implements HttpInterceptor {
         if (currentUser && currentUser.authToken) {
             request = request.clone({
                 setHeaders: {
-                    Authtoken: `213${currentUser.authToken}`
+                    Authtoken: `${currentUser.authToken}`
                 }
             });
         }
 
-        return next.handle(request);
+        // return next.handle(request);
+        return next.handle(request).pipe(
+            catchError(err => {
+                console.log('err', err)
+            if (err.status === 401) {
+                // auto logout if 401 response returned from api
+                console.log('not authorized')
+                this.authenticationService.logout();
+                location.reload(true);
+            }
+
+            const error = err.statusMessage || 'Not authorized';
+            return throwError(error);
+        }
+        ))
     }
 }

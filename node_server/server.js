@@ -1,66 +1,34 @@
-var express = require('express');
-//var MongoClient = require('mongodb').MongoClient;
-//var ObjectId    = require('mongodb').ObjectID;
+const express = require('express');
+const mysql   = require('mysql');
+const cors    = require('cors');
+const multer  = require('multer');
 
-var mysql = require('mysql');
-var sql = require("mssql");
-var cors = require('cors');
-var multer = require('multer');
-const DIR = '../public/images/users/'; 
-var bodyParser = require('body-parser');
+const db      = require('./database');
+const DIR     = '../public/images/users/'; 
+const bodyParser = require('body-parser');
 
-let user = require('./routes/user')
-var router=express.Router();
-var app = express();
-var user_collection = '';
+const auth    = require('./routes/auth')
+const user    = require('./routes/user')
+
+const app     = express();
+
 app.use(express.static('app'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors())
 
-const users_columnIndexMapping = ["user_first_name", "user_last_name", "user_email", "is_active", "created_on", "updated_on"]
-global.users_columnIndexMapping = users_columnIndexMapping;
-// mysql
-var con = mysql.createConnection({ 
-  host: "localhost", 
-  user: "root", 
-  password: "", 
-  database: "angular_architecture",
-});
-con.connect(function (err) {
+database.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
-
-  var server = app.listen(8081, function () {
-    var host = server.address().address
-    var port = server.address().port
-    console.log("Example app listening at http://%s:%s", host, port)
+  const server = app.listen(8081, function () {
+      const host = server.address().address
+      const port = server.address().port
+      console.log("Example app listening at http://%s:%s", host, port)
   });
 
 });
 
-var base = "/app"
-global.db = con;
-
-// router.use(function(req,res,next){
-//   var token= req.body.Authtoken || req.headers['Authtoken'];
-//   console.log('token', token)
-//   if(token){
-//       jwt.verify(token,process.env.SECRET_KEY,function(err,ress){
-//           if(err){
-//               res.status(500).send('Token Invalid');
-//           }else{
-//               next();
-//           }
-//       })
-//   }else{
-//       res.send('Please send a token')
-//   }
-// })
-
-app.post('/user/login', user.login);
-
-
+app.post('/user/login', auth.login);
 app.post('/userList', user.userList);
 
 

@@ -16,12 +16,12 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@shared/interceptors/jwt.interceptor';
-import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
-
+// import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
+import { UserIdleTimerService } from './services/user-idle-timer.service'
 
 @NgModule({
-  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent, 
-   // ComponentLoaderComponent
+  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent,
+    // ComponentLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -31,8 +31,9 @@ import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
     // DataTableModule
   ],
   providers: [
+    UserIdleTimerService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
     // fakeBackendProvider
@@ -44,4 +45,8 @@ import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
     //ComponentLoaderComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  constructor(private userIdleTimerService: UserIdleTimerService) {
+    
+  }
+}

@@ -4,6 +4,7 @@ import { User } from '@shared/models/user';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthGuard } from '@shared/guards/auth.guard'
+import { UserIdleTimerService } from '@shared/services/user-idle-timer.service';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +18,12 @@ export class HeaderComponent {
 
   modalHeaderNoAccess: string = '';
   modalBodyNoAccess: string = '';
+
   constructor(
       private router: Router,
       private authenticationService: AuthenticationService,
-      private authGuard: AuthGuard
+      private authGuard: AuthGuard,
+      private userIdleTimerService: UserIdleTimerService
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
           router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
@@ -36,6 +39,11 @@ export class HeaderComponent {
        }
      });
      
+    //  this.userIdleTimerService.isUserInactive.subscribe(() => {
+    //   this.modalHeaderNoAccess = 'Inactivity';
+    //     this.modalBodyNoAccess = 'You are idle for a long time, click Close to avoid logout'
+    //     this.openModal();
+    // })
   }
 
   logout() {
@@ -45,5 +53,8 @@ export class HeaderComponent {
 
   openModal() {
     this.showModalNoAccess = !this.showModalNoAccess;
+  }
+  closeModal() {
+    this.showModalNoAccess = false;
   }
 }

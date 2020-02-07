@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, Observable , throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { AuthenticationService } from '@shared/services/authentication.service';
 

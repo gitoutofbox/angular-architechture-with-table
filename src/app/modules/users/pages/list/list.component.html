@@ -7,8 +7,8 @@
         <filters [filteredData]="filterBy" (onFilterApply)="onFilterApply($event)"></filters>
     </div>
     <div class="right pull-right">
-        <action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown>
-        <a  [routerLink]="['add']">Add user</a>
+        <div class="pull-left"><action-dropdown [data]="tableData" (onActionComplete)="onActionComplete($event)"></action-dropdown></div>
+        <a  [routerLink]="['add']" class="add-user"><i class="fa fa-user-plus fa-5" aria-hidden="true"></i></a>
     </div>
 </div>
 
