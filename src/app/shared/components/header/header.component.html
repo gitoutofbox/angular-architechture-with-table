@@ -1,6 +1,6 @@
 <!-- <a [routerLink]="skipNavigation">Skip to main content</a> -->
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-  <ul class="navbar-nav">
+  <ul class="navbar-nav mr-auto">
     <li class="nav-item">
       <a class=" nav-link" routerLink="home" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }">Home</a>
@@ -34,8 +34,12 @@
       <a class="nav-link" (click)="openModal()">Modal</a> 
     </li>  
   </ul>
-</nav>
+  <div class="my-2 my-lg-0 user-profile">
+    Hello {{currentUser.firstName}} {{currentUser.lastName}} 
+    <img class="profile-photo" src="assets/images/users/{{currentUser.photo}}" *ngIf="currentUser.photo"/>
+  </div>
 
+</nav>
 <app-modal-window [showModal]="showModalNoAccess">
   <span class="header">{{modalHeaderNoAccess}}</span>
   <div class="body">{{modalBodyNoAccess}}</div>

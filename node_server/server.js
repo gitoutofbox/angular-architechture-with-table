@@ -4,7 +4,7 @@ const cors    = require('cors');
 const multer  = require('multer');
 
 const db      = require('./database');
-const DIR     = '../public/images/users/'; 
+const DIR     = 'assets/images/users/'; 
 const bodyParser = require('body-parser');
 
 const auth    = require('./routes/auth')

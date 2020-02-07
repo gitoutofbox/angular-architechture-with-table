@@ -26,12 +26,7 @@ export class HeaderComponent {
       private userIdleTimerService: UserIdleTimerService
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-          router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
-        if( ! this.router.url.endsWith('#main-content')) {
-            this.skipNavigation = `#main-content`;
-        }
-     });
-     this.authGuard.noPermissionObservable.subscribe(permission => {
+      this.authGuard.noPermissionObservable.subscribe(permission => {
        if(permission.status == 'no-access') {
         this.modalHeaderNoAccess = permission.header;
         this.modalBodyNoAccess = permission.body;

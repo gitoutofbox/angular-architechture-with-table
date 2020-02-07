@@ -37,7 +37,13 @@
             }
         }
     }
-      
+    .user-profile{
+        margin-right: -13px;
+        .profile-photo{
+            height: 40px;
+            border: 1px solid #ccc;
+        }
+    }
 } 
 .navbar-dark .navbar-nav .nav-link{
     color: #fff;
