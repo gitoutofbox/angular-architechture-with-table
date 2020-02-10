@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    console.log('returnUrl', this.returnUrl)
   }
 
   // convenience getter for easy access to form fields
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
+    console.log('returnUrlddddd', this.returnUrl) 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;

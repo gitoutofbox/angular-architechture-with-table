@@ -2,12 +2,12 @@
     <i class="fa fa-trash text-danger" aria-hidden="true"></i>
 </a>
 
-<app-modal-window [showModal]="showModal">
-    <span class="header">Confirm Delete</span>
-    <div class="body">Are you sure you want to delete the user: <strong>{{data.user_first_name}}
+<modal-window [showModal]="showModal" (onClose)="closeModal()">
+    <span modal-header>Confirm Delete</span>
+    <div modal-body>Are you sure you want to delete the user: <strong>{{data.user_first_name}}
             {{data.user_last_name}}</strong></div>
-    <div class="footer">
+    <div modal-footer>
         <button class="btn btn-secondary" (click)="showModal = false">Close</button>
         <button class="btn btn-primary" (click)="doDelete()">OK</button>
     </div>
-</app-modal-window>
+</modal-window>

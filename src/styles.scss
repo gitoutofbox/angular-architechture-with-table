@@ -29,6 +29,9 @@ table, .table {
         color: #fff;
         background-color: #5a2640;
         border-color: #f2a885;
+        &:hover {
+            background-color: #2f1422;
+        }
     }
     
     .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {

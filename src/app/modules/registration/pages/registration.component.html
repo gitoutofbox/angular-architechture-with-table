@@ -3,7 +3,7 @@
     <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" id="staticEmail" formControlName="email"
-        [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid">
+        [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid" autocomplete="off">
       <div *ngIf="registerForm.controls.email.touched">
         <div class="text-danger" *ngIf="registerForm.controls.email.touched && registerForm.controls.email.hasError('required')">
           Email is required</div>
@@ -46,3 +46,12 @@
       <button type="submit" class="btn btn-primary">Sign in</button></div>
   </div>
 </form>
+
+<modal-window [showModal]="showModalConfirmNavigation">
+  <div modal-header>Confirm navigation</div>
+  <div modal-body>You have unsaved data, if you navigate you'll loose those. <br />Do you still want to navigate?</div>
+  <div modal-footer>
+    <button class="btn btn-secondary" (click)="navigateAction(false)">No</button>
+    <button class="btn btn-primary" (click)="navigateAction(true)">Yes</button>
+  </div>
+</modal-window>

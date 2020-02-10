@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './pages/registration.component';
-
+import { CanDeactivateGuard } from '@shared/guards/can-deactivate.guard';
+import { SharedModule } from '@shared/shared.module'
 const routes: Routes = [
-    { path: '', component: RegistrationComponent }
+    { path: '', component: RegistrationComponent, canDeactivate:[CanDeactivateGuard] }
 ];
 
 @NgModule({
@@ -14,7 +15,11 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
+  ],
+  exports:[
+    RegistrationComponent
   ]
 })
 export class RegistrationModule { }

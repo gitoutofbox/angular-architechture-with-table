@@ -26,6 +26,7 @@ export class HeaderComponent {
       private userIdleTimerService: UserIdleTimerService
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+      
       this.authGuard.noPermissionObservable.subscribe(permission => {
        if(permission.status == 'no-access') {
         this.modalHeaderNoAccess = permission.header;
@@ -47,9 +48,14 @@ export class HeaderComponent {
   }
 
   openModal() {
-    this.showModalNoAccess = !this.showModalNoAccess;
+    this.showModalNoAccess = true;
   }
   closeModal() {
     this.showModalNoAccess = false;
+  }
+  openDemoModal() {
+    this.modalHeaderNoAccess  = 'Sample Modal'
+    this.modalBodyNoAccess    = 'This is the body of sample modal window';
+    this.openModal();
   }
 }

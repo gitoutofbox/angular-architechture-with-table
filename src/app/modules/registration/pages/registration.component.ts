@@ -1,15 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { CanComponentDeactivate } from '@shared/guards/can-deactivate.guard';
+
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, CanComponentDeactivate   {
  
   private submitted: boolean;
   private duplicateEmailDbounce;
+
+  public showModalConfirmNavigation: boolean = false;
+  public navigateConfirmSubject$: Subject<boolean> = new Subject<boolean>();
+  constructor(private fb: FormBuilder) {
+
+  }
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    // if ((this.user.name.length > 0 || this.user.email.length > 0) && !this.saved) {
+    //   return confirm('Your changes are unsaved!! Do you like to exit');
+    // }
+    if(this.registerForm.touched) {
+     // return confirm('Your changes are unsaved!! Do you like to exit');
+      this.showModalConfirmNavigation = true;
+      return this.navigateConfirmSubject$;
+    } else {
+      return true;
+    }
+  }
+  navigateAction(yesOrNo: boolean) {
+    this.showModalConfirmNavigation = false;
+    this.navigateConfirmSubject$.next(yesOrNo);
+  }
+
+
   public registerForm = this.fb.group({
       email:    ['', Validators.compose([Validators.required, Validators.email]), this.isEmailUnique.bind(this)],
       passwords: this.fb.group({
@@ -20,12 +47,11 @@ export class RegistrationComponent implements OnInit {
     })
   });
   
-  constructor(private fb: FormBuilder) {}
+  
   isEmailUnique(control: FormControl) {
     clearTimeout(this.duplicateEmailDbounce);
     const q = new Promise((resolve, reject) => {
       this.duplicateEmailDbounce = setTimeout(() => {
-        console.log('sss')
         resolve({ 'isEmailUnique': true });
         //resolve(null);
         // this.userService.isEmailRegisterd(control.value).subscribe(() => {

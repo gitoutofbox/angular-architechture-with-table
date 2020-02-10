@@ -1,4 +1,27 @@
 <p>
-  This is app/modules/home/pages/home/home.component
-  <app-testimonial></app-testimonial>
+  This is home page.
+   <br />
+  <!-- <button class="btn btn-primary" (click)="openModal()">Open Modal</button> -->
 </p>
+
+<modal-window [showModal]="showModal" (onClose)="closeModal()">
+  <div modal-header>{{modalHeader}}</div>
+  <div modal-body>
+    {{modalBody}}
+  <button class="btn btn-primary" (click)="openModal2()">Register</button>
+
+  </div>
+  <div modal-footer>
+    <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+  </div>
+</modal-window>
+
+<modal-window [showModal]="showModal2" (onClose)="closeModal2()">
+    <div modal-header>{{modalHeader2}}</div>
+    <div modal-body>
+      <app-registration></app-registration>
+    </div>
+    <div modal-footer>
+      <button class="btn btn-secondary" (click)="closeModal2()">Close</button>
+    </div>
+  </modal-window>

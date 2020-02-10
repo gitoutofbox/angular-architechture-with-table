@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+// import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '@shared/services/authentication.service';
 
@@ -33,33 +33,25 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['admin@admin.com', Validators.required],
       password: ['admin', Validators.required]
-    });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    });    
   }
 
-  // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
 
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';    
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
-      // .pipe(first())
+    this.authenticationService.login(this.f.username.value, this.f.password.value)  
       .subscribe(
-        data => {
-          console.log('data', data)
+        data => {          
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          console.log(error)
           this.error = error;
           this.loading = false;
         }

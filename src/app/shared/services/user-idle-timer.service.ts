@@ -9,12 +9,11 @@ export class UserIdleTimerService {
   public isUserInactive: Subject<any> = new Subject();
   constructor() {
     this.timeoutUserActivity();
-    this.isUserInactive.subscribe(() => console.log('user has been inactive for 3m'));
-    console.log('asd')
+    this.isUserInactive.subscribe(() => console.log('user has been inactive for 30m'));
    }
 
    timeoutUserActivity() {
-    this.userActiveTimer = setTimeout(() => this.isUserInactive.next(undefined), 30000);
+    this.userActiveTimer = setTimeout(() => this.isUserInactive.next(undefined), 30 * 60 * 1000);
   }
 
   @HostListener('window:mousemove')

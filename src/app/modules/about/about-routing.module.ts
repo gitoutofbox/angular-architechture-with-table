@@ -12,7 +12,6 @@ import { CareerComponent } from './pages/career/career.component';
 const routes: Routes = [
     {
         path: '', 
-        // component: AboutComponent,
         canActivateChild:[AuthGuard],
         children: [
             {path: 'about-us', component: AboutComponent},
