@@ -1,30 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, fromEvent } from 'rxjs';
 import { CanComponentDeactivate } from '@shared/guards/can-deactivate.guard';
-
+import { exhaustMap } from 'rxjs/operators';
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit, CanComponentDeactivate   {
+export class RegistrationComponent implements OnInit, CanComponentDeactivate, AfterViewInit   {
  
   private submitted: boolean;
   private duplicateEmailDbounce;
+  @ViewChild('submitButton', {static: false}) submitButton: ElementRef;
 
   public showModalConfirmNavigation: boolean = false;
   public navigateConfirmSubject$: Subject<boolean> = new Subject<boolean>();
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiService: ApiService) {
 
   }
-  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-    // if ((this.user.name.length > 0 || this.user.email.length > 0) && !this.saved) {
-    //   return confirm('Your changes are unsaved!! Do you like to exit');
-    // }
+  ngAfterViewInit() {
+
+    
+    fromEvent(this.submitButton.nativeElement, 'click').pipe(
+      exhaustMap(() => {
+        console.log('sending api call to register');
+        const postData = {
+          email: this.registerForm.controls.email.value,
+          password: this.registerForm.controls.passwords['controls'].password.value
+        };
+        return this.apiService.post('http://localhost:8081/user/register', postData)
+      }
+    )
+  ).subscribe((resp) => {
+    console.log('Registration aesponse arrived');
+      console.log('resp', resp);
+  })}
+  
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {    
     if(this.registerForm.touched) {
-     // return confirm('Your changes are unsaved!! Do you like to exit');
       this.showModalConfirmNavigation = true;
       return this.navigateConfirmSubject$;
     } else {
@@ -52,7 +68,7 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate   {
     clearTimeout(this.duplicateEmailDbounce);
     const q = new Promise((resolve, reject) => {
       this.duplicateEmailDbounce = setTimeout(() => {
-        resolve({ 'isEmailUnique': true });
+        resolve({ 'isEmailUnique': false });
         //resolve(null);
         // this.userService.isEmailRegisterd(control.value).subscribe(() => {
         //   resolve(null);

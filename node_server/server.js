@@ -28,6 +28,7 @@ database.connect(function (err) {
 
 });
 
+app.post('/user/register', auth.register);
 app.post('/user/login', auth.login);
 app.post('/userList', user.userList);
 
