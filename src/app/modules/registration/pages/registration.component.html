@@ -19,6 +19,7 @@
     <div class="col-sm-10">
       <input type="password" class="form-control" formControlName="password"
         [class.is-invalid]="registerForm.controls.passwords.controls.password.touched && registerForm.controls.passwords.controls.password.invalid">
+        <password-strength-meter [password]="registerForm.controls.passwords.controls.password.value" (strengthChange)="onStrengthChange($event)"></password-strength-meter>
       <div *ngIf="registerForm.controls.passwords.controls.password.touched">
         <div class="text-danger" *ngIf="registerForm.controls.passwords.controls.password.touched && registerForm.controls.passwords.controls.password.hasError('required')">
           Password is required</div>

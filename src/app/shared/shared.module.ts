@@ -17,10 +17,11 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@shared/interceptors/jwt.interceptor';
 // import { ErrorInterceptor } from '@shared/interceptors/error.interceptor';
-import { UserIdleTimerService } from './services/user-idle-timer.service'
+import { UserIdleTimerService } from './services/user-idle-timer.service';
+import { PasswordStrengthMeterComponent } from './components/password-strength-meter/password-strength-meter.component'
 
 @NgModule({
-  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent,
+  declarations: [HeaderComponent, ModalWindowComponent, PaginationComponent, FileUploaderComponent, AutocompleteComponent, PasswordStrengthMeterComponent,
     // ComponentLoaderComponent
   ],
   imports: [
@@ -40,7 +41,8 @@ import { UserIdleTimerService } from './services/user-idle-timer.service'
   ],
   exports: [HeaderComponent, ModalWindowComponent,
     PaginationComponent, ChartsModule, FileUploaderComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    PasswordStrengthMeterComponent
     // DataTableModule,
     //ComponentLoaderComponent
   ]

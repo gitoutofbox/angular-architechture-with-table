@@ -129,4 +129,8 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
       
    };
 
+   onStrengthChange(strength) {
+     console.log(strength)
+   }
+
 }
