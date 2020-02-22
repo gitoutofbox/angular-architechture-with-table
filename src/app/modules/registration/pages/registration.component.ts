@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Observable, Subject, fromEvent } from 'rxjs';
 import { CanComponentDeactivate } from '@shared/guards/can-deactivate.guard';
 import { exhaustMap, switchMap, map } from 'rxjs/operators';
@@ -15,6 +15,8 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
  
   private submitted: boolean;
   private duplicateEmailDbounce;
+  // hobbies: FormArray;
+
   @ViewChild('submitButton', {static: false}) submitButton: ElementRef;
 
   public showModalConfirmNavigation: boolean = false;
@@ -28,6 +30,7 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
     fromEvent(this.submitButton.nativeElement, 'click').pipe(
       exhaustMap(() => {
         console.log('sending api call to register');
+        console.log(this.registerForm)
         const postData = {
           email: this.registerForm.controls.email.value,
           password: this.registerForm.controls.passwords['controls'].password.value
@@ -60,17 +63,34 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
                   [
                     // this.isEmailUnique.bind(this),
                     // DuplicateEmailValidator(this.apiService)
-                  ]
+                  ] //async validator(used as  in view)
                 ],
       passwords : this.fb.group({
         password        : ['', Validators.compose([Validators.required])],
         confirmPassword : ['', Validators.compose([Validators.required])]
       }, {
         validator: this.confirmPasswordMatch('password', 'confirmPassword')
-    })
+    }),
+    hobbies: this.fb.array([ this.createHobby() ])
   });
   
-  
+  createHobby(): FormGroup {
+    return this.fb.group({
+      hobbyName:      ['', [Validators.required]],
+      hobbyDetail:    ['', [Validators.required]]
+    });
+  }
+
+  get hobbies(): FormArray {
+    return this.registerForm.get('hobbies') as FormArray;
+  } 
+
+  addHobby(): void {
+    this.hobbies.push(this.createHobby());
+  }
+  removeHobby(rowIndex: number) {
+		this.hobbies.removeAt(rowIndex);
+	}
   // isEmailUnique(control: FormControl) {
   //   clearTimeout(this.duplicateEmailDbounce);
   //   const q = new Promise((resolve, reject) => {
