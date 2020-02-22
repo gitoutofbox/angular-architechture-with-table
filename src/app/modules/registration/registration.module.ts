@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './pages/registration.component';
 import { CanDeactivateGuard } from '@shared/guards/can-deactivate.guard';
 import { SharedModule } from '@shared/shared.module'
+
+import { DuplicateEmailValidatorDirective } from './validators/email.validator';
 const routes: Routes = [
     { path: '', component: RegistrationComponent, canDeactivate:[CanDeactivateGuard] }
 ];
 
 @NgModule({
-  declarations: [RegistrationComponent],
+  declarations: [RegistrationComponent, DuplicateEmailValidatorDirective],
   imports: [
     CommonModule,
     FormsModule,

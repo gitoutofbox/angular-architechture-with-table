@@ -44,3 +44,20 @@ exports.userList = function (req, res) {
         });
     });
 };
+
+exports.emailCheck = function(req, res) {
+    const email = req.body.email || req.headers['email'];
+    const sql = `SELECT COUNT(*) AS total_row FROM arc_users where user_email ='${email}' `;
+    console.log(sql);
+    database.query(sql, (err, countRows) => {
+        if (err) throw err;
+        let resp = {
+            status: "success",
+            statusMessage: "",
+            data: { 
+                isDuplicate: countRows[0].total_row > 0 ? true : false
+             }
+        }
+        res.send(resp);
+    });
+}

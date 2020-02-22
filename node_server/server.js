@@ -30,6 +30,8 @@ database.connect(function (err) {
 
 app.post('/user/register', auth.register);
 app.post('/user/login', auth.login);
+app.post('/user/email-check', user.emailCheck);
+app.post('/userList', user.userList);
 app.post('/userList', user.userList);
 
 

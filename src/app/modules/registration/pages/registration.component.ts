@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, fromEvent } from 'rxjs';
 import { CanComponentDeactivate } from '@shared/guards/can-deactivate.guard';
-import { exhaustMap } from 'rxjs/operators';
+import { exhaustMap, switchMap, map } from 'rxjs/operators';
 import { ApiService } from '@shared/services/api.service';
+import { DuplicateEmailValidator } from '../validators/email.validator';
 
 @Component({
   selector: 'app-registration',
@@ -54,29 +55,35 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
 
 
   public registerForm = this.fb.group({
-      email:    ['', Validators.compose([Validators.required, Validators.email]), this.isEmailUnique.bind(this)],
-      passwords: this.fb.group({
-        password: ['', Validators.compose([Validators.required])],
-        confirmPassword: ['', Validators.compose([Validators.required])]
+      email     : ['', 
+                  [Validators.required, Validators.email], 
+                  [
+                    // this.isEmailUnique.bind(this),
+                    // DuplicateEmailValidator(this.apiService)
+                  ]
+                ],
+      passwords : this.fb.group({
+        password        : ['', Validators.compose([Validators.required])],
+        confirmPassword : ['', Validators.compose([Validators.required])]
       }, {
         validator: this.confirmPasswordMatch('password', 'confirmPassword')
     })
   });
   
   
-  isEmailUnique(control: FormControl) {
-    clearTimeout(this.duplicateEmailDbounce);
-    const q = new Promise((resolve, reject) => {
-      this.duplicateEmailDbounce = setTimeout(() => {
-        resolve({ 'isEmailUnique': false });
-        //resolve(null);
-        // this.userService.isEmailRegisterd(control.value).subscribe(() => {
-        //   resolve(null);
-        // }, () => { resolve({ 'isEmailUnique': true }); });
-      }, 1000);
-    });
-    return q;
-  }
+  // isEmailUnique(control: FormControl) {
+  //   clearTimeout(this.duplicateEmailDbounce);
+  //   const q = new Promise((resolve, reject) => {
+  //     this.duplicateEmailDbounce = setTimeout(() => {       
+  //       this.apiService.post('http://localhost:8081/user/email-check', {"email": control.value}).subscribe((resp) => {
+  //         resolve({ 'duplicateEmail': resp['data'].isDuplicate });
+  //       }, () => { resolve({ 'duplicateEmail': true }); });
+  //     }, 1000);
+  //   });
+  //   return q;
+  // }
+
+
   ngOnInit() {
     console.log(this.registerForm)
   }
