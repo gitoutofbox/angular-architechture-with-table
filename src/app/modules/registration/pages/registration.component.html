@@ -5,7 +5,7 @@
       <input type="text" class="form-control" id="staticEmail" formControlName="email"
         [class.is-invalid]="registerForm.controls.email.touched && registerForm.controls.email.invalid"
         autocomplete="off" duplicateEmail>
-      {{registerForm.controls.email.errors | json}}
+      <!-- {{registerForm.controls.email.errors | json}} -->
       <div *ngIf="registerForm.controls.email.invalid">
         <div class="text-danger"
           *ngIf="registerForm.controls.email.touched && registerForm.controls.email.hasError('required')">
@@ -24,9 +24,9 @@
       <input type="password" class="form-control" formControlName="password"
         [class.is-invalid]="registerForm.controls.passwords.controls.password.touched && registerForm.controls.passwords.controls.password.invalid">
 
-      <password-strength-meter [password]="registerForm.controls.passwords.controls.password.value"
+      <!-- <password-strength-meter [password]="registerForm.controls.passwords.controls.password.value"
         (strengthChange)="onStrengthChange($event)">
-      </password-strength-meter>
+      </password-strength-meter> -->
 
       <div *ngIf="registerForm.controls.passwords.controls.password.touched">
         <div class="text-danger"
@@ -46,8 +46,7 @@
           *ngIf="registerForm.controls.passwords.controls.confirmPassword.touched && registerForm.controls.passwords.controls.confirmPassword.hasError('required')">
           Confirm Password is required</div>
         <div class="text-danger"
-          *ngIf="registerForm.controls.passwords.controls.confirmPassword.hasError('confirmPasswordMatch')">Passwords
-          must match</div>
+          *ngIf="registerForm.controls.passwords.controls.confirmPassword.hasError('confirmPasswordMatch')">Passwords must match</div>
       </div>
     </div>
   </div>
@@ -79,7 +78,7 @@
           </div>
         </div>
       </div>      
-      <a (click)="addHobby()">Add Hobby</a>
+      <a (click)="addHobby()"> + Add Hobby</a>
     </div>
   </div>
 

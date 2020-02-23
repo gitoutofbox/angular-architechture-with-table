@@ -24,9 +24,7 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
   constructor(private fb: FormBuilder, private apiService: ApiService) {
 
   }
-  ngAfterViewInit() {
-
-    
+  ngAfterViewInit() {   
     fromEvent(this.submitButton.nativeElement, 'click').pipe(
       exhaustMap(() => {
         console.log('sending api call to register');
@@ -91,32 +89,18 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
   removeHobby(rowIndex: number) {
 		this.hobbies.removeAt(rowIndex);
 	}
-  // isEmailUnique(control: FormControl) {
-  //   clearTimeout(this.duplicateEmailDbounce);
-  //   const q = new Promise((resolve, reject) => {
-  //     this.duplicateEmailDbounce = setTimeout(() => {       
-  //       this.apiService.post('http://localhost:8081/user/email-check', {"email": control.value}).subscribe((resp) => {
-  //         resolve({ 'duplicateEmail': resp['data'].isDuplicate });
-  //       }, () => { resolve({ 'duplicateEmail': true }); });
-  //     }, 1000);
-  //   });
-  //   return q;
-  // }
+  
 
 
   ngOnInit() {
     console.log(this.registerForm)
   }
 
-  confirmPasswordMatch(controlName: string, matchingControlName: string) {
+  confirmPasswordMatch(controlName: string, matchingControlName: string) {    
     return (formGroup: FormGroup) => {
+      // console.log(controlName, matchingControlName)
         const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
-
-        if (matchingControl.errors && !matchingControl.errors.confirmPasswordMatch) {
-            // return if another validator has already found an error on the matchingControl
-            return;
-        }
 
         // set error on matchingControl if validation fails
         if (control.value !== matchingControl.value) {
@@ -131,7 +115,17 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
   //     this.editData = {id:editDataObj.id, name: editDataObj.name, email: editDataObj.email};
   //     this.userForm.setValue(this.editData);
   // }
-
+  isEmailUnique(control: FormControl) {
+    clearTimeout(this.duplicateEmailDbounce);
+    const q = new Promise((resolve, reject) => {
+      this.duplicateEmailDbounce = setTimeout(() => {       
+        this.apiService.post('http://localhost:8081/user/email-check', {"email": control.value}).subscribe((resp) => {
+          resolve({ 'duplicateEmail': resp['data'].isDuplicate });
+        }, () => { resolve({ 'duplicateEmail': true }); });
+      }, 1000);
+    });
+    return q;
+  }
   
   onSubmit(){
   //     this.submitted = true;

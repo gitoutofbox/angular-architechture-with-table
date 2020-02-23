@@ -34,7 +34,6 @@ export class PasswordStrengthMeterComponent implements OnInit, OnChanges {
     totalCriteria = this.specialCharCheck ? totalCriteria + 1 : totalCriteria;
     totalCriteria = this.smallcaseCheck ? totalCriteria + 1 : totalCriteria;
     totalCriteria = this.uppercaseCheck ? totalCriteria + 1 : totalCriteria;
-    console.log(totalCriteria)
     this.feedbackArr = [];
     this.score = 0;
     this.score = this.isLengthMet()       ? this.score + parseFloat((100 / totalCriteria).toFixed(2)) : this.score;
