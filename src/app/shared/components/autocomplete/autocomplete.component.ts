@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
 import { ApiService } from '@shared/services/api.service';
 
 @Component({
@@ -30,20 +30,22 @@ export class AutocompleteComponent implements OnInit {
 
   
   ngOnInit() {
-    this.autoCompleteUpdate.pipe(         
-      map((resp)=>{
-        this.items = [];    
-        clearInterval(this.intervalCall);
-        this.timeToCallApi = 2000;
-        this.intervalCall = setInterval(() => {
-          this.timeToCallApi -= 100;
-          if(this.timeToCallApi == 0) {clearInterval(this.intervalCall); this.timeToCallApi = 2000;}
-        },100)
-        return resp;
-      }),
+    this.autoCompleteUpdate.pipe(
+      tap(data => console.log('tap at begening data', data)),
+      map((data) => data = data + 'XXXXXXX'),  
+      // map((resp)=>{
+      //   this.items = [];    
+      //   clearInterval(this.intervalCall);
+      //   this.timeToCallApi = 2000;
+      //   this.intervalCall = setInterval(() => {
+      //     this.timeToCallApi -= 100;
+      //     if(this.timeToCallApi == 0) {clearInterval(this.intervalCall); this.timeToCallApi = 2000;}
+      //   },100)
+      //   return resp;
+      // }),
       debounceTime(2000),
       distinctUntilChanged(), 
-
+      tap(data => {console.log('tap data', data)}),
       switchMap(value => {
         clearInterval(this.intervalGet); 
         this.timerToGetResponse = 5000;
@@ -52,7 +54,9 @@ export class AutocompleteComponent implements OnInit {
           this.timerToGetResponse -= 100;
           if(this.timerToGetResponse == 0) {clearInterval(this.intervalGet); this.timerToGetResponse = 5000;}
         },100) 
-        return this.apiService.get(`http://localhost:8081/email/get/${this.autoCompleteNgModel}`) } )
+
+        return this.apiService.get(`http://localhost:8081/email/get/${value}`) } )
+        // return this.apiService.get(`http://localhost:8081/email/get/${this.autoCompleteNgModel}`) } )
     )
     .subscribe(resp => {
       clearInterval(this.intervalGet);

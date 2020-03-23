@@ -36,36 +36,37 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-    fromEvent(this.loginButton.nativeElement, 'click').pipe(
-      map(r => {this.loginCalled++; return r}),
-      exhaustMap(() => {
-        console.log('sending api call to register');
-        this.submitted = true;
-        if (this.loginForm.invalid) {
-          return;
-        }
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        this.loading = true;
+  // ngAfterViewInit() {
+  //   fromEvent(this.loginButton.nativeElement, 'click').pipe(
+  //     map(r => {this.loginCalled++; return r}),
+  //     exhaustMap(() => {
+  //       console.log('sending api call to register');
+  //       this.submitted = true;
+  //       console.log('this.loginForm.invalid', this.loginForm.invalid)
+  //       if (this.loginForm.invalid) {
+  //         return;
+  //       }
+  //       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  //       this.loading = true;
 
-        const postData = {
-          email: this.f.username.value,
-          password: this.f.password.value
-        };
-        this.apiCalled++;
-        return this.apiService.post('http://localhost:8081/user/login', postData)
-      }
-      )
-    ).subscribe(data => {
-
-      this.router.navigate([this.returnUrl]);
-    },
-      error => {
-        this.error = error;
-        this.loading = false;
-      }
-    )
-  }
+  //       const postData = {
+  //         email: this.f.username.value,
+  //         password: this.f.password.value
+  //       };
+  //       this.apiCalled++;
+  //       return this.apiService.post('http://localhost:8081/user/login', postData)
+  //     }
+  //     )
+  //   ).subscribe(data => {
+  //     console.log('data', data)
+  //     this.router.navigate([this.returnUrl]);
+  //   },
+  //     error => {
+  //       this.error = error;
+  //       this.loading = false;
+  //     }
+  //   )
+  // }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -76,24 +77,24 @@ export class LoginComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
 
-  // onSubmit() {
-  //   this.submitted = true;
-  //   if (this.loginForm.invalid) {
-  //     return;
-  //   }
+  onSubmit() {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
 
-  //   this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  //   this.loading = true;
-  //   this.authenticationService.login(this.f.username.value, this.f.password.value)
-  //     .subscribe(
-  //       data => {
-  //         this.router.navigate([this.returnUrl]);
-  //       },
-  //       error => {
-  //         this.error = error;
-  //         this.loading = false;
-  //       }
-  //     )
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.loading = true;
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+      .subscribe(
+        data => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          this.error = error;
+          this.loading = false;
+        }
+      )
 
-  // }
+  }
 }

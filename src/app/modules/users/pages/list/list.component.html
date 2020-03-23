@@ -50,8 +50,16 @@
             <td class="text-center">
                 <app-change-status [data]="row"></app-change-status>
             </td>
-            <td>{{row.created_on | date: 'medium'}}</td>
-            <td>{{row.updated_on | date: 'medium'}}</td>
+            <td>
+                <span *ngIf="row.created_on && row.created_on !== '0000-00-00 00:00:00'">
+                    {{row.created_on | date: 'medium'}}
+                </span>
+            </td>
+            <td>
+                <span *ngIf="row.updated_on && row.updated_on !== '0000-00-00 00:00:00'">
+                    {{row.updated_on | date: 'medium'}}
+                </span>
+            </td>
             <td class="text-center">
                 <action-edit [data]="row"></action-edit> &nbsp;
                 <action-delete [data]="row" (onDeleteSuccess)="onDeleteSuccess($event)"></action-delete>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { Observable, Subject, fromEvent } from 'rxjs';
 import { CanComponentDeactivate } from '@shared/guards/can-deactivate.guard';
@@ -11,7 +11,7 @@ import { DuplicateEmailValidator } from '../validators/email.validator';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.sass']
 })
-export class RegistrationComponent implements OnInit, CanComponentDeactivate, AfterViewInit   {
+export class RegistrationComponent implements OnInit, CanComponentDeactivate, AfterViewInit, OnDestroy   {
  
   private submitted: boolean;
   private duplicateEmailDbounce;
@@ -154,4 +154,8 @@ export class RegistrationComponent implements OnInit, CanComponentDeactivate, Af
      console.log(strength)
    }
 
+   ngOnDestroy(){
+    document.removeEventListener('click', this.submitButton.nativeElement, false);
+    console.log("Removed event listener"); 
+}
 }
